@@ -2,11 +2,14 @@
 	<Folder Name="/docs/" />
 	<Folder Name="/docs/decisions/">
 		<File Path="001-project-structure.md" />
+		<File Path="003-cqrs-and-application-architecture.md" />
 	</Folder>
+	<Folder Name="/docs/Images/" />
 	<Folder Name="/docs/learning/">
 		<File Path="002-global-exception-handling.md" />
 		<File Path="002a-global-exception-handling -with-problem-details.md" />
 		<File Path="003-cancellation-token.md" />
+		<File Path="004-cqrs-mediatr-clean-architecture-and-solid.md" />
 	</Folder>
 	<Project Path="MyLife.API/MyLife.API.csproj" />
 	<Project Path="MyLife.Application/MyLife.Application.csproj" />

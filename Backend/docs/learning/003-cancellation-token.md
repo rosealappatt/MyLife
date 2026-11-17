@@ -1,6 +1,6 @@
 # CancellationToken in ASP.NET Core
 
-##
+## Understanding:
 Cancellation is not necessarily an application error.
 It's often simply: "The client no longer wants this operation."
 That's why cancellation needs to be handled deliberately rather than blindly turning every exception into a 500.
@@ -12,6 +12,41 @@ We will not build the full cancellation scenario yet. First we'll understand and
 
 And importantly, the token is not something we manually create for every request. -> (NO var cancellationToken = new CancellationToken();)
 ASP.NET Core creates the request cancellation token and can cancel it when the HTTP request is aborted.
+
+## This:
+await Task.Delay(TimeSpan.FromSeconds(10),  cancellationToken);
+
+ ## is very different from:
+await Task.Delay(TimeSpan.FromSeconds(10));
+
+ ## Without cancellation:
+Request
+   ↓
+Task.Delay(10 sec)
+   ↓
+wait 10 seconds
+   ↓
+return response
+
+# -> Even if the client goes away, your code isn't being explicitly told to stop waiting.
+
+
+## With cancellation
+Request
+   ↓
+Task.Delay(10 sec, token)
+   ↓
+Client cancels request
+   ↓
+Token becomes cancelled
+   ↓
+Task.Delay notices
+   ↓
+Operation is cancelled
+
+# -> That's the whole point of CancellationToken.
+
+
 
 
 ## 1. What problem are we solving?

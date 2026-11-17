@@ -1,5 +1,6 @@
 using Scalar.AspNetCore;
 using MyLife.API.Middleware;
+using MyLife.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,9 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
+
+// Register Application services, including MediatR and the command/query handlers discovered in its assembly.
+builder.Services.AddApplication();
 
 
 var app = builder.Build();
