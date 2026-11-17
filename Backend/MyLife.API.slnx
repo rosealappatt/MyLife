@@ -6,6 +6,7 @@
 	<Folder Name="/docs/learning/">
 		<File Path="002-global-exception-handling.md" />
 		<File Path="002a-global-exception-handling -with-problem-details.md" />
+		<File Path="003-cancellation-token.md" />
 	</Folder>
 	<Project Path="MyLife.API/MyLife.API.csproj" />
 	<Project Path="MyLife.Application/MyLife.Application.csproj" />

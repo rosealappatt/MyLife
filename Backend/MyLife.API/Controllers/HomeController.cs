@@ -32,5 +32,15 @@ namespace MyLife.API.Controllers
         {
             throw new Exception("This is a test exception.");
         }
+
+        [HttpGet("cancel-test")]
+        public async Task<IActionResult> TestCancellationAsync(CancellationToken cancellationToken)
+        {
+            await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
+            return Ok(new
+            {
+                message = "Operation Cancelled successfully"
+            });
+        }
     }
 }
