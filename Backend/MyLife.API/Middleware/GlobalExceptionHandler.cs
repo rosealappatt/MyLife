@@ -64,6 +64,8 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
 
             KeyNotFoundException => StatusCodes.Status404NotFound,
 
+            OperationCanceledException => StatusCodes.Status499ClientClosedRequest,
+
             _ => StatusCodes.Status500InternalServerError
         };
 
@@ -79,6 +81,8 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
                 StatusCodes.Status401Unauthorized => "Authentication is required.",
 
                 StatusCodes.Status404NotFound => "The requested resource was not found.",
+
+                StatusCodes.Status499ClientClosedRequest => "This request has been cancelled by the user.",
 
                 _ => "An error occurred while processing your request."
             },
