@@ -1,3 +1,10 @@
 <Solution>
+  <Folder Name="/docs/" />
+  <Folder Name="/docs/decisions/">
+    <File Path="001-project-structure.md" />
+  </Folder>
+  <Project Path="../MyLife.Application/MyLife.Application.csproj" Id="7c57c8c6-066c-4e44-9211-40c621f99d2e" />
+  <Project Path="../MyLife.Domain/MyLife.Domain.csproj" Id="b4cb88f8-6fba-45cd-89ee-fc1b7f8eb970" />
+  <Project Path="../MyLife.Infrastructure/MyLife.Infrastructure.csproj" Id="768266ba-1c50-4e1f-a3b3-356e42f61e5e" />
   <Project Path="MyLife.API.csproj" />
 </Solution>
