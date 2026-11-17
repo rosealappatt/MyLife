@@ -26,5 +26,11 @@ namespace MyLife.API.Controllers
                 message = "Connected to MyLife API"
             });
         }
+
+        [HttpGet("test-exception")]
+        public IActionResult ThrowException()
+        {
+            throw new Exception("This is a test exception.");
+        }
     }
 }

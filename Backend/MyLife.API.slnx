@@ -3,6 +3,9 @@
 	<Folder Name="/docs/decisions/">
 		<File Path="001-project-structure.md" />
 	</Folder>
+	<Folder Name="/docs/learning/">
+		<File Path="002-global-exception-handling.md" />
+	</Folder>
 	<Project Path="MyLife.API/MyLife.API.csproj" />
 	<Project Path="MyLife.Application/MyLife.Application.csproj" />
 	<Project Path="MyLife.Domain/MyLife.Domain.csproj" />

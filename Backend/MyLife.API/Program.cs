@@ -1,4 +1,5 @@
 using Scalar.AspNetCore;
+using MyLife.API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,14 +7,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Services
 // ----------------------------------------------------
 
-// Add services to the container.
-
+// Add services to the dependency injection container.
 builder.Services.AddControllers();
 
 // Generate OpenAPI document
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+//  Register the global exception handler with dependency injection..
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+//  Register the infrastructure for producing standardized Problem Details error responses.
+builder.Services.AddProblemDetails();
 
 /*
  * Health endpoint added before implementing authentication, CQRS, etc.
@@ -39,6 +43,10 @@ var app = builder.Build();
 // ----------------------------------------------------
 // Middleware pipeline
 // ----------------------------------------------------
+
+// Apply the global exception handler middleware to catch unhandled exceptions and return a JSON response to the client.
+// This activates the exception-handling middleware in the request pipeline.
+app.UseExceptionHandler();
 
 // Expose OpenAPI JSON
 //app.MapOpenApi();
