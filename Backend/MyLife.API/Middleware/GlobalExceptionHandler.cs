@@ -1,21 +1,25 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MyLife.API.Middleware;
 
 /// <summary>
-/// Centralized exception handler for unhandled exceptions
-/// that occur while processing an HTTP request.
+/// Centralized handler for unhandled exceptions.
 ///
-/// Instead of every controller/service having its own
-/// try-catch block, ASP.NET Core sends unhandled exceptions
-/// to this class.
+/// This class is responsible for:
+/// 1. Logging the exception.
+/// 2. Determining the appropriate HTTP status code.
+/// 3. Creating a standardized ProblemDetails response.
+/// 4. Returning the response to the client.
 /// </summary>
 public sealed class GlobalExceptionHandler : IExceptionHandler
 {
+    // ASP.NET Core provides ILogger through dependency injection.
     private readonly ILogger<GlobalExceptionHandler> _logger;
 
     /// <summary>
     /// Constructor.
+    /// ILogger is automatically supplied by ASP.NET Core's dependency injection container.
     /// </summary>
     public GlobalExceptionHandler(
         ILogger<GlobalExceptionHandler> logger)
@@ -63,23 +67,44 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
             _ => StatusCodes.Status500InternalServerError
         };
 
-        // Set the HTTP status code that will be returned to the client.
+        // Create a standardized ProblemDetails response.
+        // ProblemDetails gives our API a consistent structure for communicating HTTP errors.
+        var problemDetails = new ProblemDetails
+        {
+            // A human-readable summary of the problem.
+            Title = statusCode switch
+            {
+                StatusCodes.Status400BadRequest => "The request is invalid.",
+
+                StatusCodes.Status401Unauthorized => "Authentication is required.",
+
+                StatusCodes.Status404NotFound => "The requested resource was not found.",
+
+                _ => "An error occurred while processing your request."
+            },
+
+            // HTTP status code associated with the problem.
+            Status = statusCode,
+
+            // The API endpoint where the problem occurred.
+            Instance = httpContext.Request.Path
+        };
+
+        // Add our trace ID as an extension.
+        //
+        // This is useful because the client can provide this ID
+        // to us when reporting an error, allowing us to find the
+        // corresponding server-side log entry.
+        problemDetails.Extensions["traceId"] = httpContext.TraceIdentifier;
+
+        // Tell the client that we are returning an HTTP ProblemDetails response.
+        httpContext.Response.ContentType = "application/problem+json";
+
+        // Set the HTTP status code.
         httpContext.Response.StatusCode = statusCode;
 
-        /*
-         * Return a simple JSON response to the client.
-         * Notice that we are NOT returning exception message directly to the client.
-         * This is intentional because exception messages can accidentally expose internal implementation details.
-         * This is an important PRODUCTION APPLICATION DESIGN PRINCIPLE.
-         */
-        await httpContext.Response.WriteAsJsonAsync(
-            new
-            {
-                title = "An error occurred while processing your request.",
-                statusCode,
-                traceId = httpContext.TraceIdentifier // TraceIdentifier allows us to correlate the response received by the client with the corresponding log entry.
-            },
-            cancellationToken);
+        // Serialize the ProblemDetails object as JSON.
+        await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
 
         return true;
     }
