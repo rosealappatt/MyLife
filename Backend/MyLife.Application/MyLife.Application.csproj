@@ -10,4 +10,11 @@
     <ProjectReference Include="..\MyLife.Domain\MyLife.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Common\Behaviours\" />
+    <Folder Include="Common\Interfaces\" />
+    <Folder Include="Common\Models\" />
+    <Folder Include="Features\" />
+  </ItemGroup>
+
 </Project>

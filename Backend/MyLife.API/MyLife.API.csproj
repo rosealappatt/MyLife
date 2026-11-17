@@ -7,13 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.15" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.16.17" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MyLife.Application\MyLife.Application.csproj" />
     <ProjectReference Include="..\MyLife.Infrastructure\MyLife.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Middleware\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>
